@@ -187,7 +187,7 @@ let getPost = async (id) => {
 let PostShow = {
 
     render : async () => {
-        let request = Utils.parseRequestURL()
+        let request = parseRequestURL()
         let post = await getPost(request.id)
         
         return /*html*/`
