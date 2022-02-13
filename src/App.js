@@ -1,3 +1,6 @@
+import Header from "./views/components/Header";
+import Footer from "./views/components/Footer";
+
 /* Routing */
 
 const routes = {
@@ -8,8 +11,17 @@ const routes = {
 };
 
 const router = async () => {
-    //Lazy load
-    const content = null || document.getElementById('page_container');
+    //Lazy load view elemtents
+    const content = null || document.getElementById('page__container');
+    const header = null || document.getElementById('header__container');
+    const footer = null || document.getElementById('footer__container');
+
+    //Render components in page (header and footer) <- no matter what url is requested, header and footer always render
+    header.innerHTML = await Header.render();
+    await Header.after_render();
+    footer.innerHTML = await Footer.render();
+    await Footer.after_render();
+
     // get the url with the split '/'
     let request = Utils.parseRequestURL();
 
@@ -27,5 +39,5 @@ const router = async () => {
 // Listen on hash change #, we pass the function to launch
 window.addEventListener('hashchange',router);
 
-//Liste load
+//Listen load
 window.addEventListener('load',router);
