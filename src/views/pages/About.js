@@ -1,3 +1,9 @@
+let OnRegister = () => {
+    console.log("ayo");
+    alert("ayo");
+}
+
+
 let About = {
     render : async () => {
         let view = /*html*/`
@@ -8,6 +14,10 @@ let About = {
         `
 
         return view;
+    },
+
+    after_render : async () => {
+        document.getElementById('header__btn-register').addEventListener("click", OnRegister());
     }
 }
 
