@@ -1,6 +1,19 @@
-import Header from "./views/components/Header";
-import Footer from "./views/components/Footer";
+parseRequestURL : () => {
+    let url = location.hash.slice(1).toLowerCase() || '/';
+    let r = url.split("/");
 
+    let request = {
+        resource: null,
+        id: null,
+        verb: null
+    }
+
+    request[resource] = r[1];
+    request[id] = r[2];
+    request[verb] = r[3];
+
+    return request;
+}
 /* Routing */
 
 const routes = {
@@ -33,9 +46,63 @@ const router = async () => {
 
     // await is to manipulate sync
     content.innerHTML = await page.render();
-    await page.after_render();
+    await page.after_render();   
 }
 
+let OnRegister = () => {
+    console.log("ayo");
+    alert("ayo");
+}
+
+let About = {
+    render : async () => {
+        let view = /*html*/`
+            <section class="about__hero">
+                <h1>About</h1>
+                <p>This is the about page</p>
+                <button id ="header__btn-register">Button</button>
+            </section>
+        `
+
+        return view;
+    },
+
+    after_render : async () => {
+        document.getElementById('header__btn-register').addEventListener("click", OnRegister());
+    }
+}
+
+let Header = {
+    render : async () => {
+        let view = /*html*/`
+        <header class="header">
+            <div class="header__content has-text-centered">
+                <p>This is a header, we could make it useful. We won't</p>
+            </div>
+        </header>
+        `
+
+        return view;
+    },
+
+    after_render : async () => {/* Put events in here */}
+}
+
+let Footer = {
+    render : async () => {
+        let view = /*html*/`
+        <footer class="footer">
+            <div class="footer__content has-text-centered">
+                <p>This is a footer, we could make it prettier. We won't</p>
+            </div>
+        </footer>
+        `
+
+        return view;
+    },
+
+    after_render : async () => {/* Put events in here */}
+}
 // Listen on hash change #, we pass the function to launch
 window.addEventListener('hashchange',router);
 
