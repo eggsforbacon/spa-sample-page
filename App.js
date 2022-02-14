@@ -130,7 +130,7 @@ let Register = {
     render: async () => {
         return /*html*/ `
             <section class="section register">
-                <h1> Register </h1>
+                <h1> Sign Up </h1>
                 <hr/>
                 <div class="register__wrapper flex flex-dir-col flex-ai-c">
                     <input class="input register__input" id="email_input" type="email" placeholder="Enter your Email">
@@ -164,18 +164,23 @@ let Login = {
     render : async () => {
         let view = `
             <section class="section login">
-                <h1>Login</h1>
+                <h1>Log In</h1>
                 <hr/>
                 <div class="login__wrapper flex flex-dir-col flex-ai-c">
-                    <input class="input login" id="email_input" type="email" placeholder="Enter your Email">
-                    <input class="input login" id="pass_input" type="password" placeholder="Enter your Password">
-                    <button class="button is-primary register__submit-btn" id="register__submit-btn"> Login </button>
+                    <input class="input login__input" id="email_input" type="email" placeholder="Enter your Email">
+                    <input class="input login__input" id="pass_input" type="password" placeholder="Enter your Password">
+                    <div class="login__submit-container flex flex-jc-sb">
+                        <button class="button is-primary login__btn login__btn__confirm" id="login__confirm-btn"> Login </button>
+                        <button class="button is-light login__btn login__btn__cancel" id="login__cancel-btn" href="/#/"> Cancel </button>
+                    </div>
                 </div>
             </section>
         `
         return view;
     },
-    after_render : async () => { }
+    after_render : async () => { 
+        
+    }
 }
 
 let Error404 = {
