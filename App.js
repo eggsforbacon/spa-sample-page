@@ -156,6 +156,86 @@ let About = {
     }
 }
 
+let Home = {
+   render : async () => {
+       let posts = await getPostsList()
+       let view =  /*html*/`
+           <section class="section">
+               <h1> Home </h1>
+               <hr/>
+               <ul>
+                   ${ posts.map(post => 
+                       /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
+                       ).join('\n ')
+                   }
+               </ul>
+           </section>
+       `
+       return view
+   }
+   , after_render: async () => {
+   }
+
+}
+
+let Register = {
+
+    render: async () => {
+        return /*html*/ `
+            <section class="section register">
+                <h1> Sign Up </h1>
+                <hr/>
+                <div class="register__wrapper flex flex-dir-col flex-ai-c">
+                    <input class="input register__input" id="email_input" type="email" placeholder="Enter your Email">
+                    <input class="input register__input" id="pass_input" type="password" placeholder="Enter a Password">
+                    <input class="input register__input" id="repeat_pass_input" type="password" placeholder="Enter the same Password again">
+                    <button class="button is-primary register__submit-btn" id="register__submit-btn"> Register </button>
+                </div>
+            </section>
+        `
+    }
+    // All the code related to DOM interactions and controls go in here.
+    // This is a separate call as these can be registered only after the DOM has been painted
+    , after_render: async () => {
+        document.getElementById("register__submit-btn").addEventListener ("click",  () => {
+            let email       = document.getElementById("email_input");
+            let pass        = document.getElementById("pass_input");
+            let repeatPass  = document.getElementById("repeat_pass_input");
+            if (pass.value != repeatPass.value) {
+                alert (`The passwords dont match`)
+            } else if (email.value =='' | pass.value == '' | repeatPass == '') {
+                alert (`The fields cannot be empty`)
+            } 
+            else {
+                alert(`User with email ${email.value} was successfully submitted!`);
+            }    
+        })
+    }
+}
+
+let Login = {
+    render : async () => {
+        let view = `
+            <section class="section login">
+                <h1>Log In</h1>
+                <hr/>
+                <div class="login__wrapper flex flex-dir-col flex-ai-c">
+                    <input class="input login__input" id="email_input" type="email" placeholder="Enter your Email">
+                    <input class="input login__input" id="pass_input" type="password" placeholder="Enter your Password">
+                    <div class="login__submit-container flex flex-jc-sb">
+                        <button class="button is-primary login__btn login__btn__confirm" id="login__confirm-btn"> Login </button>
+                        <button class="button is-light login__btn login__btn__cancel" id="login__cancel-btn" href="/#/"> Cancel </button>
+                    </div>
+                </div>
+            </section>
+        `
+        return view;
+    },
+    after_render : async () => { 
+        
+    }
+}
+
 let Error404 = {
 
     render : async () => {
@@ -216,90 +296,6 @@ let getPostsList = async () => {
        console.log('Error getting documents', err)
    }
 }
-
-let Home = {
-   render : async () => {
-       let posts = await getPostsList()
-       let view =  /*html*/`
-           <section class="section">
-               <h1> Home </h1>
-               <ul>
-                   ${ posts.map(post => 
-                       /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
-                       ).join('\n ')
-                   }
-               </ul>
-           </section>
-       `
-       return view
-   }
-   , after_render: async () => {
-   }
-
-}
-
-
-let Register = {
-
-    render: async () => {
-        return /*html*/ `
-            <section class="section">
-                <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                        <input class="input" id="email_input" type="email" placeholder="Enter your Email">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-envelope"></i>
-                        </span>
-                        <span class="icon is-small is-right">
-                            <i class="fas fa-check"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input class="input" id="pass_input" type="password" placeholder="Enter a Password">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input class="input" id="repeat_pass_input" type="password" placeholder="Enter the same Password again">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control">
-                        <button class="button is-primary" id="register_submit_btn">
-                        Register
-                        </button>
-                    </p>
-                </div>
-            </section>
-        `
-    }
-    // All the code related to DOM interactions and controls go in here.
-    // This is a separate call as these can be registered only after the DOM has been painted
-    , after_render: async () => {
-        document.getElementById("register_submit_btn").addEventListener ("click",  () => {
-            let email       = document.getElementById("email_input");
-            let pass        = document.getElementById("pass_input");
-            let repeatPass  = document.getElementById("repeat_pass_input");
-            if (pass.value != repeatPass.value) {
-                alert (`The passwords dont match`)
-            } else if (email.value =='' | pass.value == '' | repeatPass == '') {
-                alert (`The fields cannot be empty`)
-            } 
-            else {
-                alert(`User with email ${email.value} was successfully submitted!`)
-            }    
-        })
-    }
-}
-
 /* Routing */
 const routes = {
     '/': Home,
