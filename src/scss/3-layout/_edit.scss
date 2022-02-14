@@ -1,0 +1,28 @@
+.edit {
+
+    &__wrapper {
+        margin: 3rem 16rem 1rem 16rem;
+        padding: 3rem 16rem 1rem 16rem;
+        min-width: 10rem;
+        background-color: #fafafa;
+        border-radius: 5px;
+        filter: drop-shadow(0 0 1.5rem #00000044);
+    }
+    
+    &__input {
+        margin-top: 0.3125rem;
+        margin-bottom: 0.3125rem;
+        min-width: 15rem;
+        text-align: center;
+    }
+    
+    &__submit-container {
+        filter: drop-shadow(0 0 1.5rem #00000033);
+    }
+
+    &__btn {
+        width: 10rem;
+        min-width: 6rem;
+        margin: 1rem;
+    }
+}

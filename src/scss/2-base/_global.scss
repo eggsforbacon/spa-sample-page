@@ -12,6 +12,14 @@ h1 {
     color: h.$teal;
 }
 
+h3 {
+    font-size: h.$font-medium;
+}
+
+h5 {
+    color: h.$light-gray;
+}
+
 /* Helpers */
 .page__container {
     padding: 0 2rem;

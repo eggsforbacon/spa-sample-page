@@ -19,15 +19,10 @@ let parseRequestURL = () => {
     return request;
 }
 
-let OnRegister = () => {
-    console.log("ayo");
-    alert("ayo");
-}
-
 let Header = {
     render : async () => {
         let view = /*html*/`
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+        <nav class="navbar header" role="navigation" aria-label="main navigation">
                 <div class="container">
                     <div class="navbar-brand">
                         <a class="navbar-item" href="/#/">
@@ -41,13 +36,13 @@ let Header = {
                     </div>
                     <div id="navbarBasicExample" class="navbar-menu is-active" aria-expanded="false">
                         <div class="navbar-start">
-                            <a class="navbar-item" href="/#/">
+                            <a class="navbar-item header__link" href="/#/">
                                 Home
                             </a>
-                            <a class="navbar-item" href="/#/about">
+                            <a class="navbar-item header__link" href="/#/about">
                                 About
                             </a>
-                            <a class="navbar-item" href="/#/secret">
+                            <a class="navbar-item header__link" href="/#/secret">
                                 Secret
                             </a>
                         </div>
@@ -57,7 +52,7 @@ let Header = {
                                     <a class="button is-primary" href="/#/register">
                                         <strong>Sign up</strong>
                                     </a>
-                                    <a class="button is-light">
+                                    <a class="button is-light" href="/#/login">
                                         Log in
                                     </a>
                                 </div>
@@ -89,60 +84,12 @@ let Footer = {
     after_render : async () => {/* Put events in here */}
 }
 
-let Navbar = {
-    render: async () => {
-        let view =  /*html*/`
-             <nav class="navbar" role="navigation" aria-label="main navigation">
-                <div class="container">
-                    <div class="navbar-brand">
-                        <a class="navbar-item" href="/#/">
-                            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-                        </a>
-                        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </div>
-                    <div id="navbarBasicExample" class="navbar-menu is-active" aria-expanded="false">
-                        <div class="navbar-start">
-                            <a class="navbar-item" href="/#/">
-                                Home
-                            </a>
-                            <a class="navbar-item" href="/#/about">
-                                About
-                            </a>
-                            <a class="navbar-item" href="/#/secret">
-                                Secret
-                            </a>
-                        </div>
-                        <div class="navbar-end">
-                            <div class="navbar-item">
-                                <div class="buttons">
-                                    <a class="button is-primary" href="/#/register">
-                                        <strong>Sign up</strong>
-                                    </a>
-                                    <a class="button is-light">
-                                        Log in
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        `
-        return view
-    },
-    after_render: async () => { }
-
-}
-
 let About = {
     render : async () => {
         let view = /*html*/`
             <section class="section">
                 <h1>About</h1>
+                <hr/>
                 <p>This is the about page</p>
                 <button id ="header__btn-register">Button</button>
             </section>
@@ -151,14 +98,12 @@ let About = {
         return view;
     },
 
-    after_render : async () => {
-        document.getElementById('header__btn-register').addEventListener("click", OnRegister());
-    }
+    after_render : async () => {}
 }
 
 let Home = {
    render : async () => {
-       let posts = await getPostsList()
+       let posts = await getPostsList();
        let view =  /*html*/`
            <section class="section">
                <h1> Home </h1>
@@ -220,11 +165,11 @@ let Login = {
                 <h1>Log In</h1>
                 <hr/>
                 <div class="login__wrapper flex flex-dir-col flex-ai-c">
-                    <input class="input login__input" id="email_input" type="email" placeholder="Enter your Email">
-                    <input class="input login__input" id="pass_input" type="password" placeholder="Enter your Password">
+                    <input class="input login__input" id="email_input_log" type="email" placeholder="Enter your Email">
+                    <input class="input login__input" id="pass_input_log" type="password" placeholder="Enter your Password">
                     <div class="login__submit-container flex flex-jc-sb">
-                        <button class="button is-primary login__btn login__btn__confirm" id="login__confirm-btn"> Login </button>
-                        <button class="button is-light login__btn login__btn__cancel" id="login__cancel-btn" href="/#/"> Cancel </button>
+                        <a class="button is-primary login__btn login__btn__confirm" id="login__confirm-btn"> Login </a>
+                        <a class="button is-light login__btn login__btn__cancel" id="login__cancel-btn" href="/#"> Cancel </a>
                     </div>
                 </div>
             </section>
@@ -232,8 +177,46 @@ let Login = {
         return view;
     },
     after_render : async () => { 
-        
+        document.getElementById('login__confirm-btn').addEventListener("click", () => {
+            let email = document.getElementById('email_input_log');
+            let password = document.getElementById('pass_input_log');
+    
+            if (email.value == '') {
+                alert("Email can't be an empty value");
+            } else if (password.value == '') {
+                alert("Password can't be an empty value");
+            } else {
+                alert("Login succesful! :D");
+                let btn = document.getElementById('login__confirm-btn');
+                btn.href = "/#/edit"
+            }
+        });
     }
+}
+
+
+let Edit = {
+    render : async () => {
+        let posts = await getPostsList();
+        let view = `
+            <section class="section">
+                <h1> Edit </h1>
+                <hr/>
+                <ul>
+                    ${ posts.map(post => 
+                        /*html*/`
+                        <li>
+                            <a href="#/edit/${post.id}">${post.title}</a>
+                        </li>
+                    `).join('\n ')}   
+                </ul>
+            </section>
+        `
+
+        return view;
+    },
+    after_render : async () => {}
+
 }
 
 let Error404 = {
@@ -275,15 +258,63 @@ let PostShow = {
             }
         });
         return /*html*/`
-            <section class="section">
-                <h1>Post Id : ${temp.id}</h1>
-                <p> Post Title : ${temp.title} </p>
-                <p> Post Content : ${temp.content} </p>
-                <p> Post Author : ${temp.name} </p>
+            <section class="post-show section">
+                <h1> ${temp.title}</h1>
+                <hr/>
+                <h3> Id : ${temp.id}</h3>
+                <h3> Content: ${temp.content} </h3>
+                <hr/>
+                <h5> Written by: ${temp.name} </h5>
             </section>
         `
     }
     , after_render: async () => {
+    }
+}
+
+let PostEdit = {
+    render : async () => {
+        let request = parseRequestURL()
+        let post = await getPost(request.id)
+        let temp = null;
+        post.forEach(element => {
+            if(request.id == element.id){
+                temp = element;
+            }
+        });
+        return /*html*/`
+            <section class="post-show section">
+                <h1> Editing "${temp.title}"</h1>
+                <hr/>
+                <div class="edit__wrapper flex flex-dir-col flex-ai-c">
+                    <h5 align="center"> Title: </h5>
+                    <input class="input edit__input" type="text" id="title" placeholder="${temp.title}">
+                    <h5 align="center"> Content: </h5>
+                    <input class="input edit__input" type="text" id="content"placeholder="${temp.content}">
+                    <h5 align="center"> Author: </h5>
+                    <input class="input edit__input" type="text" id="author" placeholder="${temp.name}">
+                    <div class="login__submit-container flex flex-jc-sb">
+                        <a class="button is-primary edit__btn" id="edit_update-btn"> Update </a>
+                        <a class="button is-light edit__btn" href="/#/edit"> Cancel </a>
+                    </div>
+                </div>
+                <hr/>
+            </section>
+        `
+    }, after_render : async () => {
+        let btn = document.getElementById("edit_update-btn");
+        btn.addEventListener("click", () => {
+            let title = document.getElementById('title');
+            let content = document.getElementById('content'); //Yes, I used " and ' interchangably in the same code block. I fear nothing
+            let author = document.getElementById('author');
+
+            if (title.value == '' || content.value == '' || author.value == '') {
+                alert("Please fill out all the fields");
+            } else {
+                alert("Content updated. I mean, not really, but let's prentend like it did for immerssion's sake.\n\nCool? Cool.");
+                btn.href = "/#";
+            }
+        });
     }
 }
 
@@ -306,7 +337,10 @@ const routes = {
     '/': Home,
     '/about': About,
     '/p/:id': PostShow,
-    '/register': Register
+    '/register': Register,
+    '/login' : Login,
+    '/edit' : Edit,
+    '/edit/:id': PostEdit
  };
 
  const router = async () => {
