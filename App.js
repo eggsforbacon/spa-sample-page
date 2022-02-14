@@ -264,24 +264,29 @@ let getPost = async (id) => {
    }
 }
 
-
 let PostShow = {
-
     render : async () => {
         let request = parseRequestURL()
         let post = await getPost(request.id)
+        let temp = null;
+        post.forEach(element => {
+            if(request.id == element.id){
+                temp = element;
+            }
+        });
         return /*html*/`
             <section class="section">
-                <h1>Post Id : ${post.id}</h1>
-                <p> Post Title : ${post.title} </p>
-                <p> Post Content : ${post.content} </p>
-                <p> Post Author : ${post.name} </p>
+                <h1>Post Id : ${temp.id}</h1>
+                <p> Post Title : ${temp.title} </p>
+                <p> Post Content : ${temp.content} </p>
+                <p> Post Author : ${temp.name} </p>
             </section>
         `
     }
     , after_render: async () => {
     }
 }
+
 
 let getPostsList = async () => {
     const options = {
