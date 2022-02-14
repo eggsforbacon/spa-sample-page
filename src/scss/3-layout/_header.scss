@@ -1,0 +1,9 @@
+@use "../1-helpers" as h;
+
+.header {
+    background-color: h.$primary-green;
+
+    &__link {
+        color: aliceblue;
+    }
+}

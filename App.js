@@ -17,16 +17,13 @@ let parseRequestURL = () => {
     return request;
 }
 
-let OnRegister = () => {
-    console.log("ayo");
-    alert("ayo");
-}
+/* Views */
 
 let Header = {
     render : async () => {
         let view = /*html*/`
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-                <div class="container">
+        <nav class="navbar header" role="navigation" aria-label="main navigation">
+                <div class="container header">
                     <div class="navbar-brand">
                         <a class="navbar-item" href="/#/">
                             <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
@@ -39,13 +36,13 @@ let Header = {
                     </div>
                     <div id="navbarBasicExample" class="navbar-menu is-active" aria-expanded="false">
                         <div class="navbar-start">
-                            <a class="navbar-item" href="/#/">
+                            <a class="navbar-item header__link" href="/#/">
                                 Home
                             </a>
-                            <a class="navbar-item" href="/#/about">
+                            <a class="navbar-item header__link" href="/#/about">
                                 About
                             </a>
-                            <a class="navbar-item" href="/#/secret">
+                            <a class="navbar-item header__link" href="/#/secret">
                                 Secret
                             </a>
                         </div>
@@ -55,7 +52,7 @@ let Header = {
                                     <a class="button is-primary" href="/#/register">
                                         <strong>Sign up</strong>
                                     </a>
-                                    <a class="button is-light">
+                                    <a class="button is-light" href="/#/login">
                                         Log in
                                     </a>
                                 </div>
@@ -68,14 +65,14 @@ let Header = {
         return view;
     },
 
-    after_render : async () => {/* Put events in here */}
+    after_render : async () => {}
 }
 
 let Footer = {
     render : async () => {
         let view = /*html*/`
         <footer class="footer">
-            <div class="footer__content has-text-centered">
+            <div class="footer__content content has-text-centered">
                 <p>This is a footer, we could make it prettier. We won't</p>
             </div>
         </footer>
@@ -87,60 +84,12 @@ let Footer = {
     after_render : async () => {/* Put events in here */}
 }
 
-let Navbar = {
-    render: async () => {
-        let view =  /*html*/`
-             <nav class="navbar" role="navigation" aria-label="main navigation">
-                <div class="container">
-                    <div class="navbar-brand">
-                        <a class="navbar-item" href="/#/">
-                            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-                        </a>
-                        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </div>
-                    <div id="navbarBasicExample" class="navbar-menu is-active" aria-expanded="false">
-                        <div class="navbar-start">
-                            <a class="navbar-item" href="/#/">
-                                Home
-                            </a>
-                            <a class="navbar-item" href="/#/about">
-                                About
-                            </a>
-                            <a class="navbar-item" href="/#/secret">
-                                Secret
-                            </a>
-                        </div>
-                        <div class="navbar-end">
-                            <div class="navbar-item">
-                                <div class="buttons">
-                                    <a class="button is-primary" href="/#/register">
-                                        <strong>Sign up</strong>
-                                    </a>
-                                    <a class="button is-light">
-                                        Log in
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        `
-        return view
-    },
-    after_render: async () => { }
-
-}
-
 let About = {
     render : async () => {
         let view = /*html*/`
-            <section class="section">
+            <section class="about section">
                 <h1>About</h1>
+                <hr/>
                 <p>This is the about page</p>
                 <button id ="header__btn-register">Button</button>
             </section>
@@ -150,16 +99,93 @@ let About = {
     },
 
     after_render : async () => {
-        document.getElementById('header__btn-register').addEventListener("click", OnRegister());
+        
     }
+}
+
+let Home = {
+   render : async () => {
+       let posts = await getPostsList()
+       let view =  /*html*/`
+           <section class="section">
+               <h1> Home </h1>
+               <hr/>
+               <ul>
+                   ${ posts.map(post => 
+                       /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
+                       ).join('\n ')
+                   }
+               </ul>
+           </section>
+       `
+       return view
+   }
+   , after_render: async () => {
+   }
+
+}
+
+let Register = {
+
+    render: async () => {
+        return /*html*/ `
+            <section class="section register">
+                <h1> Register </h1>
+                <hr/>
+                <div class="register__wrapper flex flex-dir-col flex-ai-c">
+                    <input class="input register__input" id="email_input" type="email" placeholder="Enter your Email">
+                    <input class="input register__input" id="pass_input" type="password" placeholder="Enter a Password">
+                    <input class="input register__input" id="repeat_pass_input" type="password" placeholder="Enter the same Password again">
+                    <button class="button is-primary register__submit-btn" id="register__submit-btn"> Register </button>
+                </div>
+            </section>
+        `
+    }
+    // All the code related to DOM interactions and controls go in here.
+    // This is a separate call as these can be registered only after the DOM has been painted
+    , after_render: async () => {
+        document.getElementById("register__submit-btn").addEventListener ("click",  () => {
+            let email       = document.getElementById("email_input");
+            let pass        = document.getElementById("pass_input");
+            let repeatPass  = document.getElementById("repeat_pass_input");
+            if (pass.value != repeatPass.value) {
+                alert (`The passwords dont match`)
+            } else if (email.value =='' | pass.value == '' | repeatPass == '') {
+                alert (`The fields cannot be empty`)
+            } 
+            else {
+                alert(`User with email ${email.value} was successfully submitted!`);
+            }    
+        })
+    }
+}
+
+let Login = {
+    render : async () => {
+        let view = `
+            <section class="section login">
+                <h1>Login</h1>
+                <hr/>
+                <div class="login__wrapper flex flex-dir-col flex-ai-c">
+                    <input class="input login" id="email_input" type="email" placeholder="Enter your Email">
+                    <input class="input login" id="pass_input" type="password" placeholder="Enter your Password">
+                    <button class="button is-primary register__submit-btn" id="register__submit-btn"> Login </button>
+                </div>
+            </section>
+        `
+        return view;
+    },
+    after_render : async () => { }
 }
 
 let Error404 = {
 
     render : async () => {
         let view =  /*html*/`
-            <section class="section">
-                <h1> 404 Error </h1>
+            <section class="error404 section">
+                <h1> 404 Error :( </h1>
+                <hr/>
+                <p>The page you requested was not found. Try checking for any spelling mistakes, or if the page really does exist.</p>
             </section>
         `
         return view
@@ -167,6 +193,9 @@ let Error404 = {
     , after_render: async () => {
     }
 }
+
+/* Posts */
+
 let getPost = async (id) => {
     const options = {
        method: 'GET',
@@ -191,7 +220,7 @@ let PostShow = {
         let post = await getPost(request.id)
         
         return /*html*/`
-            <section class="section">
+            <section class="post-show section">
                 <h1> Post Id : ${post.id}</h1>
                 <p> Post Title : ${post.title} </p>
                 <p> Post Content : ${post.content} </p>
@@ -220,95 +249,13 @@ let getPostsList = async () => {
    }
 }
 
-let Home = {
-   render : async () => {
-       let posts = await getPostsList()
-       let view =  /*html*/`
-           <section class="section">
-               <h1> Home </h1>
-               <ul>
-                   ${ posts.map(post => 
-                       /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
-                       ).join('\n ')
-                   }
-               </ul>
-           </section>
-       `
-       return view
-   }
-   , after_render: async () => {
-   }
-
-}
-
-
-let Register = {
-
-    render: async () => {
-        return /*html*/ `
-            <section class="section">
-                <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                        <input class="input" id="email_input" type="email" placeholder="Enter your Email">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-envelope"></i>
-                        </span>
-                        <span class="icon is-small is-right">
-                            <i class="fas fa-check"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input class="input" id="pass_input" type="password" placeholder="Enter a Password">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input class="input" id="repeat_pass_input" type="password" placeholder="Enter the same Password again">
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control">
-                        <button class="button is-primary" id="register_submit_btn">
-                        Register
-                        </button>
-                    </p>
-                </div>
-            </section>
-        `
-    }
-    // All the code related to DOM interactions and controls go in here.
-    // This is a separate call as these can be registered only after the DOM has been painted
-    , after_render: async () => {
-        document.getElementById("register_submit_btn").addEventListener ("click",  () => {
-            let email       = document.getElementById("email_input");
-            let pass        = document.getElementById("pass_input");
-            let repeatPass  = document.getElementById("repeat_pass_input");
-            if (pass.value != repeatPass.value) {
-                alert (`The passwords dont match`)
-            } else if (email.value =='' | pass.value == '' | repeatPass == '') {
-                alert (`The fields cannot be empty`)
-            } 
-            else {
-                alert(`User with email ${email.value} was successfully submitted!`)
-            }    
-        })
-    }
-}
-
 /* Routing */
 const routes = {
     '/': Home,
     '/about': About,
     '/p/:id': PostShow,
-    '/register': Register
+    '/register': Register,
+    '/login' : Login
  };
 
  const router = async () => {

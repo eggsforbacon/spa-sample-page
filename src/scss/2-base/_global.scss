@@ -1,3 +1,38 @@
+@use "./../1-helpers" as h;
+
+/* Globals */
+
+html {
+    font-family: 'Rubik', sans-serif;
+}
+
 h1 {
-    
+    font-size: h.$font-large;
+    font-family: 'Rubik', sans-serif;
+    color: h.$teal;
+}
+
+/* Helpers */
+.page__container {
+    padding: 0 2rem;
+}
+
+.flex {
+    display: flex;
+
+    &-dir-col {
+        flex-direction: column;
+    }
+
+    &-ai-c {
+        align-items: center;
+    }
+
+    &-jc-sb {
+        justify-content: space-between;
+    }
+
+    &-jc-cc {
+        justify-content: center;
+    }
 }
